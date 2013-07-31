@@ -13,6 +13,8 @@ parts
 bin
 var
 sdist
+venv
+out.wav
 develop-eggs
 .installed.cfg
 lib
