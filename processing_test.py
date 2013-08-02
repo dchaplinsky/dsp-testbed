@@ -1,8 +1,7 @@
 from plugins import LowPassFilter, RMS
 from aiff_reader import AiffReader
-from itertools import repeat
 import pylab
-from pylab_tools import plot_signal, ProbeResultsPlotter
+from pylab_tools import ProbeResultsPlotter
 import wave
 from struct import pack
 
@@ -25,7 +24,7 @@ rms_list = []
 lp = LowPassFilter(samplerate=r._rate, channels=r._channels)
 rms = RMS(samplerate=r._rate, channels=r._channels)
 
-for i in range(r._rate / 2):
+for i in range(r._rate):
     sample = it.next()
 
     y_list.append(sample)
@@ -42,9 +41,9 @@ ProbeResultsPlotter({
 
 pylab.show()
 
-# wf = wave.open("out.wav", 'wb')
-# wf.setnchannels(r._channels)
-# wf.setsampwidth(r._depth)
-# wf.setframerate(r._rate)
-# wf.writeframes("".join(map(lambda x: pack_to_int(x, r._depth), yp_list)))
-# wf.close()
+wf = wave.open("out.wav", 'wb')
+wf.setnchannels(r._channels)
+wf.setsampwidth(r._depth)
+wf.setframerate(r._rate)
+wf.writeframes("".join(map(lambda x: "".join(map(lambda y: pack_to_int(y, r._depth), x)), yp_list)))
+wf.close()
