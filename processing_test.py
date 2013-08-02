@@ -1,15 +1,20 @@
-from plugins import BeatDetector, RMS
+from plugins import LowPassFilter, RMS
 from aiff_reader import AiffReader
-import pylab  # matplotlib
+from itertools import repeat
+import pylab
+from pylab_tools import plot_signal, ProbeResultsPlotter
 import wave
 from struct import pack
 
 
-def pack_to_32(f):
-    return pack('i', int(f * (2 ** 31 - 1)))
+def pack_to_int(f, bytes):
+	"""
+	Very simple downsampling to fixed point.
+	"""
+	return pack('i', int(f * (2 ** (bytes * 8 - 1) - 1)))[:bytes]
 
 
-r = AiffReader("samples/demo1.aif")
+r = AiffReader("samples/demo1_stereo.aif")
 it = r.read()
 
 x_list = []
@@ -17,30 +22,29 @@ y_list = []
 yp_list = []
 rms_list = []
 
-bd = BeatDetector(r._rate)
-rms = RMS(r._rate)
+lp = LowPassFilter(samplerate=r._rate, channels=r._channels)
+rms = RMS(samplerate=r._rate, channels=r._channels)
 
-for i in range(30000):
+for i in range(r._rate / 2):
     sample = it.next()
 
-    x_list.append(i)
-    y_list.append(sample[0])
-    yp_list += bd.process([[sample[0]]])[0]
-    rms.process([[yp_list[-1]]])
+    y_list.append(sample)
+    yp_list.append(lp.process([sample])[0])
+    rms.process([yp_list[-1]])
 
     rms_list.append(rms.get_state()["rms"])
 
-pylab.subplot(211)
-pylab.plot(x_list, y_list, 'b')
+ProbeResultsPlotter({
+	"Source": y_list,
+	"Proc": yp_list,
+	"RMS": rms_list,
+	}, figure_name=1)
 
-pylab.subplot(212)
-pylab.plot(x_list, yp_list, 'g')
-pylab.plot(x_list, rms_list, 'r')
 pylab.show()
 
-wf = wave.open("out.wav", 'wb')
-wf.setnchannels(r._channels)
-wf.setsampwidth(r._depth)
-wf.setframerate(r._rate)
-wf.writeframes("".join(map(pack_to_32, yp_list)))
-wf.close()
+# wf = wave.open("out.wav", 'wb')
+# wf.setnchannels(r._channels)
+# wf.setsampwidth(r._depth)
+# wf.setframerate(r._rate)
+# wf.writeframes("".join(map(lambda x: pack_to_int(x, r._depth), yp_list)))
+# wf.close()

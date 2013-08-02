@@ -1,6 +1,6 @@
 from plugins import Plugin
 from itertools import izip
-
+from signal_source import AbstractSource
 
 class Stack(object):
     """
@@ -36,6 +36,15 @@ class Stack(object):
 
         return channels
 
+    def process_source(self, source, limit=None):
+        for sample in source.read()[:limit]:
+            process(sample)
+
+
     def probe(self):
-        for plugin, probe in izip(self._plugins, self._probes):
-            pass
+        probe_results = []
+
+        for plugin, probe_request in izip(self._plugins, self._probes):
+            res = []
+            for probe in probe_request:
+                pass
