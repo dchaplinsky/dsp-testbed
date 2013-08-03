@@ -4,6 +4,7 @@ import pylab
 from pylab_tools import ProbeResultsPlotter
 import wave
 from struct import pack
+from time import time
 
 
 def pack_to_int(f, bytes):
@@ -24,8 +25,8 @@ rms_list = []
 lp = LowPassFilter(samplerate=r._rate, channels=r._channels)
 rms = RMS(samplerate=r._rate, channels=r._channels)
 
-for i in range(r._rate):
-    sample = it.next()
+for sample in it:
+    # sample = it.next()
 
     y_list.append(sample)
     yp_list.append(lp.process([sample])[0])
