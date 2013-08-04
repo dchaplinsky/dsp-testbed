@@ -1,6 +1,7 @@
 from plugins import Plugin
 from itertools import izip
 from signal_source import AbstractSource
+from utils import DefaultOrderedDict
 
 class Stack(object):
     """
@@ -12,6 +13,8 @@ class Stack(object):
         super(Stack, self).__init__()
         self._plugins = []
         self._probes = []
+        self._input = []
+        self._clean_probe_results()
 
         for item in plugins_and_probes:
             if isinstance(item, Plugin):
@@ -28,23 +31,51 @@ class Stack(object):
 
     def _add_plugin_and_probe(self, plugin, probe):
         self._plugins.append(plugin)
-        self._probes(probe)
+        if isinstance(probe, basestring):
+            probe = [probe]
+
+        self._probes.append(probe)
+
+    def _clean_probe_results(self):
+        self.probe_results = DefaultOrderedDict(list)
 
     def process(self, channels):
+        self._input = channels
         for plugin in self._plugins:
             channels = plugin.process(channels)
 
+        self.probe()
         return channels
 
     def process_source(self, source, limit=None):
-        for sample in source.read()[:limit]:
-            process(sample)
+        output = []
+        self._clean_probe_results()
 
+        for i, sample in enumerate(source.read()):
+            if i == limit:
+                break
+
+            output += self.process([sample])
+
+        return output
 
     def probe(self):
-        probe_results = []
+        probe_results = {}
+        probe_results["input"] = self._input
+        self.probe_results["input"] += self._input
 
-        for plugin, probe_request in izip(self._plugins, self._probes):
-            res = []
+        for i, plugin, probe_request in izip(xrange(len(self._plugins)), 
+                                             self._plugins, self._probes):
             for probe in probe_request:
-                pass
+                data = plugin.get_state()
+                probe_name = "%s_%s" % (i, probe)
+
+                if probe in data:
+                    probe_results[probe_name] = data[probe]
+
+                    if probe == "output":
+                        self.probe_results[probe_name] += data[probe]
+                    else:
+                        self.probe_results[probe_name].append(data[probe])
+
+        return probe_results

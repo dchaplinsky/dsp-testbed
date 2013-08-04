@@ -11,6 +11,21 @@ measurer is present), display signals with pylab and write results to wave files
 Obviosly it's not a real project but a set of supporting tools for DSP programming, experiments
 and rapid prototyping. However even now it's helpful to me and hopefully it'll grow a little bit more.
 
+## Few words on architecture
+* **Plugins**. Very similar to those you might seen in VST (except the multichannel input is interleaved, not stripped).
+You are instantiating them with audio params (samplerate and number of channels) and plugin params (cut off, Q, etc).
+You can feed data into them using **process** method. You can query inner states of them using **state** method.
+* **Stacks**. Chain of plugins, where output of previous one connected to the input of the next one.
+Also stacks are capable to read data from signal sources (see below) and write down important values for you using
+tool called probe.
+You are instantiating stacks with list of plugins and for each of plugins you can specify a list of state variables to track
+You can feed input data using **process** method or by directly connecting signal source to the stack with **process_source**
+You can take some measures using **probe** method or just by accessing **probe_results** field (which is prepopulated
+with probe values gathered after processing a batch with **process_source**).
+* Descendants of **AbstractReader** providing input for Plugins or Stacks. Think Aiff/Wave reader,
+sine generators, etc.
+* Graph tools like **ProbeResultsPlotter** which you can use with probe results produced by **Stacks**.
+
 ## Requirements
 Core files (plugins.py/stacks.py) doesn't require anything.
 processing_test.py is using matplotlib for data visualisation
@@ -26,9 +41,10 @@ APIs will settle down.
 ## Signal displaying
 DSP test bed is using pylab to display signals. Because speed of pylab is an issue when you have tons of
 data points (like you usually do with audio signals) DSP test bed has simple yet effective signal decimation
-implemented in pylab_tools.py. Results are pretty neat (and it muuuch faster).
+implemented in pylab_tools.py. Results are pretty neat (and it's muuuch faster).
 
 ## Thanks
 * DSPMaster[at]free[dot]fr for beat detection
 * Christopher Potts (at least it's the only name I found around interactive-recorder.py)
+
 Not so many of external code has been used but it was a great inspiration for me.
