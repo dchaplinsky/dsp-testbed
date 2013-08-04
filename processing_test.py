@@ -1,6 +1,7 @@
 from plugins import LowPassFilter, RMS
 from stacks import Stack
 from aiff_reader import AiffReader
+from signal_source import DiracSource, SineSource
 import pylab
 from pylab_tools import ProbeResultsPlotter
 import wave
@@ -15,6 +16,8 @@ def pack_to_int(f, bytes):
 
 
 r = AiffReader("samples/demo1_stereo.aif")
+# r = DiracSource(channels = 1)
+# r = SineSource(freq=1000, channels=2)
 
 s = Stack([
 		(LowPassFilter(samplerate=r._rate, channels=r._channels), "output"),
@@ -25,7 +28,6 @@ s = Stack([
 out = s.process_source(r)
 ProbeResultsPlotter(s.probe_results, figure_name=1)
 pylab.show()
-
 
 wf = wave.open("out.wav", 'wb')
 wf.setnchannels(r._channels)

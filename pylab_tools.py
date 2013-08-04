@@ -78,7 +78,7 @@ class ProbeResultsPlotter(object):
         if bins == 0:
             bins = 1
 
-        bin_width = int(len(data) / bins)
+        bin_width = int(len(data) / bins) or 1
 
         out = []
         x = []

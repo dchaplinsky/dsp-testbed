@@ -15,15 +15,15 @@ and rapid prototyping. However even now it's helpful to me and hopefully it'll g
 * **Plugins**. Very similar to those you might seen in VST (except the multichannel input is interleaved, not stripped).
 You are instantiating them with audio params (samplerate and number of channels) and plugin params (cut off, Q, etc).
 You can feed data into them using **process** method. You can query inner states of them using **state** method.
-* **Stacks**. Chain of plugins, where output of previous one connected to the input of the next one.
-Also stacks are capable to read data from signal sources (see below) and write down important values for you using
+* **Stacks**. Chain of plugins, where output of previous one is connected to the input of the next one.
+Also stacks are capable to read data from signal sources (see below) and write down for you important values using
 tool called probe.
 You are instantiating stacks with list of plugins and for each of plugins you can specify a list of state variables to track
 You can feed input data using **process** method or by directly connecting signal source to the stack with **process_source**
 You can take some measures using **probe** method or just by accessing **probe_results** field (which is prepopulated
 with probe values gathered after processing a batch with **process_source**).
 * Descendants of **AbstractReader** providing input for Plugins or Stacks. Think Aiff/Wave reader,
-sine generators, etc.
+sine generators, etc. Implemented at the moment: **DiracSource**, **AiffReader**, **SineSource**
 * Graph tools like **ProbeResultsPlotter** which you can use with probe results produced by **Stacks**.
 
 ## Requirements
