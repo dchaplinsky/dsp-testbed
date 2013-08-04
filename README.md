@@ -23,7 +23,8 @@ You can feed input data using **process** method or by directly connecting signa
 You can take some measures using **probe** method or just by accessing **probe_results** field (which is prepopulated
 with probe values gathered after processing a batch with **process_source**).
 * Descendants of **AbstractReader** providing input for Plugins or Stacks. Think Aiff/Wave reader,
-sine generators, etc. Implemented at the moment: **DiracSource**, **AiffReader**, **SineSource**
+sine generators, etc. Implemented at the moment: **DiracSource**, **AiffReader**, **SineSource**, **CompoundSineSource**.
+**endless** property of class specifying if the data is generated forever.
 * Graph tools like **ProbeResultsPlotter** which you can use with probe results produced by **Stacks**.
 
 ## Requirements

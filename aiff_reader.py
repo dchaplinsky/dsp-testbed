@@ -3,6 +3,7 @@ import struct
 from signal_source import AbstractSource
 
 class AiffReader(AbstractSource):
+    endless = False
     def __init__(self, filename):
         super(AiffReader, self).__init__(filename)
 
