@@ -61,11 +61,11 @@ class SineSourceTest(unittest.TestCase):
         self.assertAlmostEqual(second[int(self.s.rate / 4)][0], 0.0, 4)
         self.assertAlmostEqual(second[int(self.s.rate / 4)][1], 0.0, 4)
 
-        self.assertGreater(second[int(self.s.rate / 4 - 1)][0], 0.0)
-        self.assertGreater(second[int(self.s.rate / 4 - 1)][1], 0.0)
+        self.assertTrue(second[int(self.s.rate / 4 - 1)][0] > 0.0)
+        self.assertTrue(second[int(self.s.rate / 4 - 1)][1] > 0.0)
 
-        self.assertLess(second[int(self.s.rate / 4 + 1)][0], 0.0)
-        self.assertLess(second[int(self.s.rate / 4 + 1)][1], 0.0)
+        self.assertTrue(second[int(self.s.rate / 4 + 1)][0] < 0.0)
+        self.assertTrue(second[int(self.s.rate / 4 + 1)][1] < 0.0)
 
 
 class CompoundSineSourceTest(unittest.TestCase):
