@@ -5,6 +5,6 @@ python:
 install:
   - pip install coveralls --use-mirrors
 # command to run tests
-script: nosetests -w dsptestbed/test/ --all-module --with-coverage --cover-erase --cover-package=dsptestbed
+script: nosetests -w dsptestbed/test/ --all-modules --with-coverage --cover-erase --cover-package=dsptestbed
 after_success:
   - coveralls

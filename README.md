@@ -1,6 +1,6 @@
 dsp-testbed
 ===========
-[![Build Status](https://travis-ci.org/dchaplinsky/dsp-testbed.png?branch=master)](https://travis-ci.org/dchaplinsky/dsp-testbed)
+[![Build Status](https://travis-ci.org/dchaplinsky/dsp-testbed.png?branch=master)](https://travis-ci.org/dchaplinsky/dsp-testbed) [![Coverage Status](https://coveralls.io/repos/dchaplinsky/dsp-testbed/badge.png?branch=master)](https://coveralls.io/r/dchaplinsky/dsp-testbed?branch=master)
 
 Simple test bed for dsp experiments. Plugins, stacks of plugins, tools, measurements, graphics.
 
