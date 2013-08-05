@@ -8,10 +8,10 @@ class AiffReader(AbstractSource):
         super(AiffReader, self).__init__(filename)
 
         self._reader = aifc.open(filename, "rb")
-        self._channels, self._depth, self._rate, _, _, _ = self._reader.getparams()
+        self.channels, self.depth, self.rate, _, _, _ = self._reader.getparams()
 
     def read(self):
-        bits = self._depth * 8
+        bits = self.depth * 8
         denominator = 2 ** (bits - 1) - 1.0
 
         while True:
@@ -21,14 +21,14 @@ class AiffReader(AbstractSource):
                 break
 
             while frames:
-                frame, frames = frames[:self._depth * self._channels], frames[self._depth * self._channels:]
+                frame, frames = frames[:self.depth * self.channels], frames[self.depth * self.channels:]
                 output = []
 
-                for c in range(self._channels):
-                    chunk = frame[c * self._depth:(c + 1) * self._depth]
+                for c in range(self.channels):
+                    chunk = frame[c * self.depth:(c + 1) * self.depth]
 
                     pad_char = ('\0' if chunk[0] < '\x80' else '\xff')
-                    sample = struct.unpack('>i', pad_char * (4 - self._depth) + chunk)[0]
+                    sample = struct.unpack('>i', pad_char * (4 - self.depth) + chunk)[0]
 
                     output.append(sample / denominator)
 

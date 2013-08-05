@@ -7,9 +7,9 @@ class AbstractSource(object):
     endless = True
     def __init__(self, filename=None):
         self._filename = filename
-        self._channels = 1
-        self._depth = 4
-        self._rate = 44100
+        self.channels = 1
+        self.depth = 4
+        self.rate = 44100
 
     def read(self):
         """
@@ -19,7 +19,7 @@ class AbstractSource(object):
 
         """
         while True:
-            yield [0.0] * self._channels
+            yield [0.0] * self.channels
 
 
 class DiracSource(AbstractSource):
@@ -29,14 +29,14 @@ class DiracSource(AbstractSource):
         https://en.wikipedia.org/wiki/Dirac_delta_function
         """
         super(DiracSource, self).__init__()
-        self._channels = channels
-        self._depth = depth
-        self._rate = rate
+        self.channels = channels
+        self.depth = depth
+        self.rate = rate
 
     def read(self):
-        yield [1.0] * self._channels
+        yield [1.0] * self.channels
         while True:
-            yield [0.0] * self._channels
+            yield [0.0] * self.channels
 
 
 class SineSource(AbstractSource):
@@ -47,17 +47,17 @@ class SineSource(AbstractSource):
         For better ideas see http://www.rossbencina.com/code/sinusoids
         """
         super(SineSource, self).__init__()
-        self._channels = channels
-        self._depth = depth
-        self._rate = rate
+        self.channels = channels
+        self.depth = depth
+        self.rate = rate
         self._freq = freq
         self._amp = amp
         self._phase = phase
-        self._w = self._freq * 2 * pi / self._rate
+        self._w = self._freq * 2 * pi / self.rate
 
     def read(self):
         for i in count():
-            yield [sin(i * self._w + self._phase) * self._amp] * self._channels
+            yield [sin(i * self._w + self._phase) * self._amp] * self.channels
 
 class CompoundSineSource(AbstractSource):
     def __init__(self, bands, normalize=True, channels=1, depth=4, rate=44110):
@@ -68,9 +68,9 @@ class CompoundSineSource(AbstractSource):
         Straightforward implementation.
         """
         super(CompoundSineSource, self).__init__()
-        self._channels = channels
-        self._depth = depth
-        self._rate = rate
+        self.channels = channels
+        self.depth = depth
+        self.rate = rate
 
         self._freq = []
         self._amp = []
@@ -82,7 +82,7 @@ class CompoundSineSource(AbstractSource):
             self._freq.append(band["freq"])
             self._amp.append(band.get("amp", 1.0))
             self._phase.append(band.get("phase", 0.0))
-            self._w.append(self._freq[-1] * 2 * pi / self._rate)
+            self._w.append(self._freq[-1] * 2 * pi / self.rate)
 
         if normalize:
             amps = float(sum(self._amp))
@@ -94,4 +94,4 @@ class CompoundSineSource(AbstractSource):
             res = sum(sin(i * self._w[b] + self._phase[b]) * self._amp[b]
                     for b in xrange(self._bands))
 
-            yield [res] * self._channels
+            yield [res] * self.channels
