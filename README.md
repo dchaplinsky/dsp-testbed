@@ -1,5 +1,6 @@
 dsp-testbed
 ===========
+[![Build Status](https://travis-ci.org/dchaplinsky/dsp-testbed.png?branch=master)](https://travis-ci.org/dchaplinsky/dsp-testbed)
 
 Simple test bed for my dsp experiments. Plugins, stacks of plugins, tools, measurements.
 
