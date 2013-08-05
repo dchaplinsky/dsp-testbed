@@ -12,7 +12,7 @@ class AiffReader(AbstractSource):
 
     def read(self):
         bits = self.depth * 8
-        denominator = 2 ** (bits - 1) - 1.0
+        denominator = float(2 ** (bits - 1))
 
         while True:
             frames = self._reader.readframes(8192)
@@ -34,7 +34,7 @@ class AiffReader(AbstractSource):
 
                 yield output
 
-if __name__ == "__main__":
+if __name__ == "__main__": # pragma: no cover
     import pylab  # matplotlib
 
     r = AiffReader("demo1.aif")
