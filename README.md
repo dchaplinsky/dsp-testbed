@@ -2,9 +2,9 @@ dsp-testbed
 ===========
 [![Build Status](https://travis-ci.org/dchaplinsky/dsp-testbed.png?branch=master)](https://travis-ci.org/dchaplinsky/dsp-testbed)
 
-Simple test bed for my dsp experiments. Plugins, stacks of plugins, tools, measurements.
+Simple test bed for dsp experiments. Plugins, stacks of plugins, tools, measurements, graphics.
 
-Very alpha stage, just a direct dump of my thoughts to the IDE.
+Alpha stage, basically a direct dump of my thoughts to the IDE.
 
 At the moment it can read aiff files, process audio data with simple plugins (LP filter and RMS 
 measurer is present), display signals with pylab and write results to wave files.

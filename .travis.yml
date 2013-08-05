@@ -2,5 +2,9 @@ language: python
 python:
   - "2.6"
   - "2.7"
+install:
+  - pip install coveralls --use-mirrors
 # command to run tests
-script: nosetests -w dsptestbed/test/ --all-module
+script: nosetests -w dsptestbed/test/ --all-module --with-coverage --cover-erase --cover-package=dsptestbed
+after_success:
+  - coveralls
