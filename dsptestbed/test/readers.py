@@ -1,6 +1,4 @@
-import os
 import unittest
-from itertools import islice
 from dsptestbed.aiff_reader import AiffReader
 
 class AiffReaderTest(unittest.TestCase):
