@@ -1,6 +1,5 @@
 from plugins import Plugin
 from itertools import izip
-from signal_source import AbstractSource
 from utils import DefaultOrderedDict
 
 class Stack(object):
@@ -20,10 +19,10 @@ class Stack(object):
             if isinstance(item, Plugin):
                 self._add_plugin_and_probe(item, [])
             elif isinstance(item, (tuple, list)):
-                if len(item) > 1:
+                if len(item) == 2:
                     self._add_plugin_and_probe(item[0], item[1])
                 elif len(item) == 1:
-                    self._add_plugin_and_probe(item, [])
+                    self._add_plugin_and_probe(item[0], [])
                 else:
                     raise Exception("Wrong plugin entry")
             else:
