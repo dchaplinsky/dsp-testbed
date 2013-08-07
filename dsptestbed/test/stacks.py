@@ -7,14 +7,9 @@ from dsptestbed.plugins import LowPassFilter, RMS
 
 class StackTest(unittest.TestCase):
     def test_validation(self):
-        with self.assertRaises(Exception):
-            Stack([[]])
-
-        with self.assertRaises(Exception):
-            Stack([{}])
-
-        with self.assertRaises(Exception):
-            Stack([range(3)])
+        self.assertRaises(Exception, Stack, [[]])
+        self.assertRaises(Exception, Stack, [{}])
+        self.assertRaises(Exception, Stack, [range(3)])
 
     def test_init(self):
         r1 = SineSource(freq=1000, channels=2)
