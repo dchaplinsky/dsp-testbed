@@ -1,6 +1,6 @@
 from plugins import LowPassFilter, RMS
 from stacks import Stack
-from aiff_reader import AiffReader
+from readers import AiffReader, WaveReader
 from signal_source import DiracSource, SineSource, CompoundSineSource
 import pylab
 from pylab_tools import ProbeResultsPlotter
