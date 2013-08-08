@@ -2,11 +2,11 @@ import aifc
 import struct
 from signal_source import AbstractSource
 
-class AiffReader(AbstractSource):
-    endless = False
+class AiffReader(AbstractSource):    
     def __init__(self, filename):
-        super(AiffReader, self).__init__(filename)
-
+        super(AiffReader, self).__init__()
+        self.endless = False
+        self._filename = filename
         self._reader = aifc.open(filename, "rb")
         self.channels, self.depth, self.rate, _, _, _ = self._reader.getparams()
 

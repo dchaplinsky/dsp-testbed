@@ -4,11 +4,11 @@ from math import pi, sin
 class AbstractSource(object):
     """Very simple Abstract Source of audio signal"""
 
-    endless = True
-    def __init__(self, filename=None):
-        self._filename = filename
+    def __init__(self, length=None):
         self.channels = 1
         self.depth = 4
+        self.endless = length == None
+        self.length = length
         self.rate = 44100
 
     def read(self):
@@ -18,35 +18,40 @@ class AbstractSource(object):
           channel2_sampleX,...]
 
         """
-        while True:
+        for i in count():
+            if self.length is not None and i == self.length:
+                break
             yield [0.0] * self.channels
 
 
 class DiracSource(AbstractSource):
-    def __init__(self, channels=1, depth=4, rate=44110):
+    def __init__(self, length=None, channels=1, depth=4, rate=44110):
         """
         Dirac impulse (or Dirac delta function)
         https://en.wikipedia.org/wiki/Dirac_delta_function
         """
-        super(DiracSource, self).__init__()
+        super(DiracSource, self).__init__(length)
         self.channels = channels
         self.depth = depth
         self.rate = rate
 
     def read(self):
         yield [1.0] * self.channels
-        while True:
+        for i in count(1):
+            if self.length is not None and i == self.length:
+                break
+
             yield [0.0] * self.channels
 
 
 class SineSource(AbstractSource):
-    def __init__(self, freq, amp=1.0, phase=0.0, channels=1, depth=4, rate=44110):
+    def __init__(self, freq, amp=1.0, phase=0.0, length=None, channels=1, depth=4, rate=44110):
         """
         Simple source of sine wave with adjustable frequency/amplitude/phase
         Straightforward implementation.
         For better ideas see http://www.rossbencina.com/code/sinusoids
         """
-        super(SineSource, self).__init__()
+        super(SineSource, self).__init__(length)
         self.channels = channels
         self.depth = depth
         self.rate = rate
@@ -57,17 +62,19 @@ class SineSource(AbstractSource):
 
     def read(self):
         for i in count():
+            if self.length is not None and i == self.length:
+                break
             yield [sin(i * self._w + self._phase) * self._amp] * self.channels
 
 class CompoundSineSource(AbstractSource):
-    def __init__(self, bands, normalize=True, channels=1, depth=4, rate=44110):
+    def __init__(self, bands, normalize=True, length=None, channels=1, depth=4, rate=44110):
         """
         Compound sine wave with adjustable frequency/amplitude/phase for each 
         band. Also can normalize amplitudes for bands to ensure that resulting
         sum will be strictly 1.0 or below
         Straightforward implementation.
         """
-        super(CompoundSineSource, self).__init__()
+        super(CompoundSineSource, self).__init__(length)
         self.channels = channels
         self.depth = depth
         self.rate = rate
@@ -91,6 +98,9 @@ class CompoundSineSource(AbstractSource):
 
     def read(self):
         for i in count():
+            if self.length is not None and i == self.length:
+                break
+            
             res = sum(sin(i * self._w[b] + self._phase[b]) * self._amp[b]
                     for b in xrange(self._bands))
 

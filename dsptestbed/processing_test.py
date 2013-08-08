@@ -18,10 +18,10 @@ def pack_to_int(f, bytes):
 
 if __name__ == "__main__":
 	r = AiffReader("samples/demo1_stereo.aif")
-	# r = SineSource(channels=2, freq=1, amp=0.5, phase=math.pi / 2)
-	# r = DiracSource(channels = 1)
-	# r = SineSource(freq=1000, channels=2)
-	# r = CompoundSineSource([dict(freq=1000, amp=0.5), dict(freq=100, amp=2)], channels=2)
+	# r = SineSource(channels=2, freq=100, amp=0.5, phase=math.pi / 2, length=1000)
+	# r = DiracSource(channels = 1, length=1000)
+	# r = SineSource(freq=1000, channels=2, length=1000)
+	# r = CompoundSineSource([dict(freq=1000, amp=0.5), dict(freq=100, amp=2)], channels=2, length=1000)
 
 	s = Stack([
 			(LowPassFilter(samplerate=r.rate, channels=r.channels), "output"),
@@ -29,7 +29,7 @@ if __name__ == "__main__":
 		]
 	)
 
-	out = s.process_source(r, 1000 if r.endless else None)
+	out = s.process_source(r)
 	ProbeResultsPlotter(s.probe_results, figure_name=1)
 	pylab.show()
 
