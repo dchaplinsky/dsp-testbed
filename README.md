@@ -50,3 +50,5 @@ implemented in pylab_tools.py. Results are pretty neat (and it's muuuch faster).
 * Christopher Potts (at least it's the only name I found around interactive-recorder.py)
 
 Not so many of external code has been used but it was a great inspiration for me.
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/dchaplinsky/dsp-testbed/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
