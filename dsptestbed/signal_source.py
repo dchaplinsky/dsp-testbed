@@ -25,7 +25,7 @@ class AbstractSource(object):
 
 
 class DiracSource(AbstractSource):
-    def __init__(self, length=None, channels=1, depth=4, rate=44110):
+    def __init__(self, length=None, channels=1, depth=4, rate=44100):
         """
         Dirac impulse (or Dirac delta function)
         https://en.wikipedia.org/wiki/Dirac_delta_function
@@ -45,7 +45,7 @@ class DiracSource(AbstractSource):
 
 
 class SineSource(AbstractSource):
-    def __init__(self, freq, amp=1.0, phase=0.0, length=None, channels=1, depth=4, rate=44110):
+    def __init__(self, freq, amp=1.0, phase=0.0, length=None, channels=1, depth=4, rate=44100):
         """
         Simple source of sine wave with adjustable frequency/amplitude/phase
         Straightforward implementation.
@@ -67,7 +67,7 @@ class SineSource(AbstractSource):
             yield [sin(i * self._w + self._phase) * self._amp] * self.channels
 
 class CompoundSineSource(AbstractSource):
-    def __init__(self, bands, normalize=True, length=None, channels=1, depth=4, rate=44110):
+    def __init__(self, bands, normalize=True, length=None, channels=1, depth=4, rate=44100):
         """
         Compound sine wave with adjustable frequency/amplitude/phase for each 
         band. Also can normalize amplitudes for bands to ensure that resulting
