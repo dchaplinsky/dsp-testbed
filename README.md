@@ -4,10 +4,9 @@ dsp-testbed
 
 Simple test bed for dsp experiments. Plugins, stacks of plugins, tools, measurements, graphics.
 
-Alpha stage, basically a direct dump of my thoughts to the IDE.
-
-At the moment it can read aiff files, process audio data with simple plugins (LP filter and RMS 
-measurer is present), display signals with pylab and write results to wave files.
+At the moment it can read aiff/wave files, process audio data with simple plugins (LP filter and RMS 
+measurer is present), display signals with pylab and write results to aiff/wave files or export
+to .mat.
 
 Obviosly it's not a real project but a set of supporting tools for DSP programming, experiments
 and rapid prototyping. However even now it's helpful to me and hopefully it'll grow a little bit more.
@@ -24,12 +23,17 @@ You can feed input data using **process** method or by directly connecting signa
 You can take some measures using **probe** method or just by accessing **probe_results** field (which is prepopulated
 with probe values gathered after processing a batch with **process_source**).
 * Descendants of **AbstractReader** providing input for Plugins or Stacks. Think Aiff/Wave reader,
-sine generators, etc. Implemented at the moment: **DiracSource**, **AiffReader**, **SineSource**, **CompoundSineSource**.
+sine generators, etc. Implemented at the moment: **DiracSource**, **AiffReader**, **WaveReader**, **SineSource**, **CompoundSineSource**.
 **endless** property of class specifying if the data is generated forever.
 * Graph tools like **ProbeResultsPlotter** which you can use with probe results produced by **Stacks**.
+* You can write results into wave/aiff file (using variety of bit depths) and export to .mat file which you 
+can later read with Matlab(tm), GNU Octave, Scipy etc. Check **writers.py** for details. 
+
+## Compatibility
+DSP test bed is working with Python 2.6, 2.7 and PyPy
 
 ## Requirements
-Core files (plugins.py/stacks.py) doesn't require anything.
+Core files (plugins.py/stacks.py/readers.py/writers.py) doesn't require anything.
 processing_test.py is using matplotlib for data visualisation
 recording_test.py is using PyAudio and basically is heavily facelifted
 script from http://www.stanford.edu/class/linguist278/notes/interactive-recorder.py
@@ -38,7 +42,7 @@ http://musicdsp.org/archive.php?classid=2#200
 
 ## Speed
 Well DSP test bed is built for comfort not for speed. However I have plans to profile it deeply once major
-APIs will settle down.
+APIs will settle down. Also as core of the lib is written using pure python you can use DSP test bed with pypy.
 
 ## Signal displaying
 DSP test bed is using pylab to display signals. Because speed of pylab is an issue when you have tons of

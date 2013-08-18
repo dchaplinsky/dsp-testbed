@@ -3,7 +3,7 @@ from stacks import Stack
 from readers import AiffReader, WaveReader
 from signal_source import DiracSource, SineSource, CompoundSineSource
 import pylab
-from writers import WaveWriter, AiffWriter
+from writers import WaveWriter, AiffWriter, MatWriter
 from pylab_tools import ProbeResultsPlotter
 import wave
 import math
