@@ -26,7 +26,7 @@ with probe values gathered after processing a batch with **process_source**).
 sine generators, etc. Implemented at the moment: **DiracSource**, **AiffReader**, **WaveReader**, **SineSource**, **CompoundSineSource**.
 **endless** property of class specifying if the data is generated forever.
 * Graph tools like **ProbeResultsPlotter** which you can use with probe results produced by **Stacks**.
-* You can write results into wave/aiff file (using variety of bit depths) and export to .mat file which you 
+* You can write results into wave/aiff file (using various bit depths) and export to .mat file which you 
 can later read with Matlab(tm), GNU Octave, Scipy etc. Check **writers.py** for details. 
 
 ## Compatibility
@@ -42,7 +42,7 @@ http://musicdsp.org/archive.php?classid=2#200
 
 ## Speed
 Well DSP test bed is built for comfort not for speed. However I have plans to profile it deeply once major
-APIs will settle down. Also as core of the lib is written using pure python you can use DSP test bed with pypy.
+APIs will settle down. Also as core of the lib is pure python you can use DSP test bed with pypy.
 
 ## Signal displaying
 DSP test bed is using pylab to display signals. Because speed of pylab is an issue when you have tons of

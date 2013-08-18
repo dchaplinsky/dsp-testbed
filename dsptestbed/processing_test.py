@@ -22,7 +22,8 @@ if __name__ == "__main__":
 	)
 
 	out = s.process_source(r)
-	ProbeResultsPlotter(s.probe_results, figure_name=1)
+	plotter = ProbeResultsPlotter(s.probe_results, figure_name=1)
+	plotter.plot()
 	pylab.show()
 
 	w = AiffWriter("out.aif", r.channels, r.depth, r.rate)

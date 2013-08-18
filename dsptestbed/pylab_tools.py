@@ -2,39 +2,10 @@ import pylab
 from math import ceil
 from operator import itemgetter
 
-def plot_signal(signal, *args):
-    channels = len(signal[0])
-    margin = 0.1
-    client_space = 1 - 2 * margin
-
-    if channels == 1:
-        pylab.plot(signal, *args)
-    else:
-        yprops = {"rotation": 0,
-                  "horizontalalignment": "right",
-                  "verticalalignment": "center",
-                  "x": -0.01}
-
-        axprops = {}
-        fig = pylab.figure()
-
-        for channel in xrange(channels):
-            ax =fig.add_axes([margin, 1 - margin - client_space / channels * (channel + 1), 
-                              client_space, client_space / channels], **axprops)
-            ax.plot(map(itemgetter(channel), signal), *args)
-            ax.set_ylabel('S%s' % channel, **yprops)
-
-            if channel == 0:
-                axprops['sharex'] = ax
-                # axprops['sharey'] = ax
-
-            if channel < channels - 1:
-                pylab.setp(ax.get_xticklabels(), visible=False)
-
 class ProbeResultsPlotter(object):
     """docstring for ProbeResultsPlotter"""
-    def __init__(self, results, margin=0.1, figure_name=None, decimate=True, bins=None):
-        self._results = results
+    def __init__(self, series = {}, margin=0.1, figure_name=None, decimate=True, bins=None):
+        self._results = series
         self._margin = margin
         self._fig = pylab.figure(figure_name, figsize=(10, 10))
         self._client_space = 1.0 - 2.0 * self._margin
@@ -42,10 +13,14 @@ class ProbeResultsPlotter(object):
         self._decimate = decimate
         self._bins = bins
 
+    def add_series(self, series):
+        self._results.update(series)
+
+    def plot(self):
         get_height = lambda res: (len(res[0]), True) \
             if isinstance(res[0], (tuple, list)) else (1.0, False)
 
-        for label, res in results.iteritems():
+        for label, res in self._results.iteritems():
             self._total_height += get_height(res)[0]
 
         self._counter = 0
@@ -56,7 +31,7 @@ class ProbeResultsPlotter(object):
 
         self._axprops = {}
 
-        for label, res in results.iteritems():
+        for label, res in self._results.iteritems():
             res_height, is_multichannel = get_height(res)
 
             if is_multichannel:
@@ -127,3 +102,7 @@ class ProbeResultsPlotter(object):
             pylab.setp(ax.get_xticklabels(), visible=False)
 
         return ax
+
+def plot_signal(signal, *args):
+    plottter = ProbeResultsPlotter({"S": signal})
+    plottter.plot()
